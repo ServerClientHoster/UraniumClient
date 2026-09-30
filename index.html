@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eaglercraft 26.2 Loader</title>
+</head>
+<body>
+    <h2 id="status">Loading game assets... Please wait.</h2>
+    <script>
+        async function loadGame() {
+            try {
+                // Fetch both parts through the browser
+                const res1 = await fetch('index.html.001');
+                const res2 = await fetch('index.html.002');
+                
+                const blob1 = await res1.blob();
+                const blob2 = await res2.blob();
+                
+                // Combine them back into a single offline file
+                const combinedBlob = new Blob([blob1, blob2], { type: 'text/html' });
+                const objectURL = URL.createObjectURL(combinedBlob);
+                
+                document.getElementById('status').innerText = "Launching...";
+                // Redirect the browser straight into the combined Eaglercraft file
+                window.location.href = objectURL;
+            } catch (err) {
+                document.getElementById('status').innerText = "Failed to stitch files together: " + err;
+            }
+        }
+        loadGame();
+    </script>
+</body>
+</html>
